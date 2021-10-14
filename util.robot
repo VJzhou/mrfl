@@ -3,6 +3,7 @@ Resource    assert.robot
 Resource    log.robot
 
 *** Keywords ***
+# 根据key获取val, default 为默认值
 Get Val From Dic
     [Arguments]     ${kw}   ${key}      ${default}=${None}
     ${default}=     set variable    ${default}
@@ -10,12 +11,13 @@ Get Val From Dic
     ${ret}=     set variable if       '${flag}'=='PASS'       ${val}      ${default}
     [Return]       ${ret}
 
+# 获取返回的信息
 Get Resp Message
     [Arguments]     ${resp}     ${message_field}
     [Return]        ${resp.json()}[${message_field}]
 
 
-
+#  测试方法 ,需要重构
 Resp List Check
     [Arguments]     ${resp}
     [Documentation]     Response list check

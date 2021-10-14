@@ -6,8 +6,7 @@ Documentation       RF version 4.1.1
 
 
 *** Keywords ***
-
-#todo 死亡处理, 重新发请求还是?
+# Get 请求  args->关键词参数
 GetR
     [Arguments]     ${request_url}      &{args}
     ${resp}=    Get     ${request_url}      &{args}
@@ -41,3 +40,4 @@ PostF
 
 
 # todo 可类似扩充其他方法
+# todo 多次请求死亡处理, 重新发请求还是?

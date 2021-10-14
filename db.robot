@@ -8,7 +8,6 @@ Get ConnectConfig
     ${config}=      Create List       database='erp'  user='root'  password='Inno@2017'  host='192.168.1.168'  port=3306
     ${config_str}=      Evaluate       ",".join(${config})
     ${type}=      Get DbDrive
-    Log      ${type}
     [Return]      ${type}       ${config_str}
 
 Get DbDrive
