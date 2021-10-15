@@ -9,15 +9,15 @@ Resource    log.robot
 testList
     ${params}=      create dictionary        page=1     limit=10
     ${headers}=     create dictionary       Auth=1234
-    ${resp}=    getr    Supplier/suplier_list      params=${params}   headers=${headers}
+    ${resp}=    getr    http://api-erp.com/admin/Supplier/suplier_list      params=${params}   headers=${headers}
     log    ${resp.json()}
-
+#    Resp Option Check      ${resp}          列表错误
 #    ${content}=     Get val from dic    ${resp.json()}      data
 #    log        ${content}
 #
 #    ${keys}=        get dictionary keys         ${content}
 #    log         ${keys}
-    Resp List Check     ${resp}
+#    Resp List Check     ${resp}
 
     #Status Should be    OK      ${resp}
 
@@ -35,7 +35,7 @@ testAdd
 #    Run Keyword And Expect Error    HTTPError: 500*         Assert Ssb      OK      ${resp}
 #    ${resp}=       Run Keyword And Expect Error    HTTPError: 500*
 #    ...         PostR      Supplier/add      ${item1}
-    Log     ${resp}
+    Resp Option Check     ${resp}
 
 
 testUpload

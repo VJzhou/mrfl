@@ -17,36 +17,25 @@ Get Resp Message
     [Return]        ${resp.json()}[${message_field}]
 
 
-#  测试方法 ,需要重构
 Resp List Check
-    [Arguments]     ${resp}
-    [Documentation]     Response list check
+    [Arguments]     ${resp}     ${log_message}=${EMPTY}
+    [Documentation]     列表类接口返回值检查, 可根据自己需求修改
     Assert Ssb      OK      ${resp}
-
-    ${message}=     Get Resp Message     ${resp}        msg
-
-    Log To Error        ${message}
-
-
     ${code}=      Set Variable      ${resp.json()}[code]
-    Log          ${resp.json()}
-    Log         ${code}
-    Run Keyword If      '${code}'=='200'        Log To Error    ${code}
-
-    ${params_keys}=     create list     list    count
-    Log To Error         ${params_keys}
-
-    ${ret_keys}=    Get Dictionary keys     ${resp.json()}[data]
-    Log To Error        ${ret_keys}
-
-    Assert List Equal     ${params_keys}     ${ret_keys}
+    Run Keyword If      '${code}'!='200'        Log Error    ${log_message}
 
 
-#Resp Option Check
-#    [Documentation]     Response check of the add or edit or delete and so on
-#    [Arguments]     ${resp}     ${message}=''
-#    Assert Ssb      OK      ${resp}
-#    ${code}=       ${resp.json()}[code]
-#    Run Keyword If      '${code}'!=200      Log To Error        ${message} ${resp.json()}[msg]
+Resp Option Check
+    [Documentation]     检查添加 编辑 删除 禁用 恢复等类似接口返回值, 可按照自己需要修改
+       ...  具体结构:  {
+       ...                   "code" : 200,
+       ...                   "message" : "xxxxxx",
+       ...                   "data" : ""
+       ...            }
+    [Arguments]     ${resp}     ${message}=${EMPTY}
+    Assert Ssb      OK      ${resp}
+    ${code}=       Set Variable     ${resp.json()}[code]
+    Log To Std Error    ${code}
+    Run Keyword If      '${code}'!='200'      Log Error     ${message}${resp.json()}[msg]
 
 
