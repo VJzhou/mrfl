@@ -1,6 +1,6 @@
 *** Setting ***
 Resource        common_include.robot
-Library         string
+
 
 *** Keywords ***
 #todo 可做成配置项

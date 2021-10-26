@@ -3,14 +3,17 @@ Resource    api_lib/requets.robot
 Resource    util.robot
 Resource    db.robot
 Resource    log.robot
+Library     SeleniumLibrary
 
 
 *** Test Cases ***
 testList
     ${params}=      create dictionary        page=1     limit=10
     ${headers}=     create dictionary       Auth=1234
-    ${resp}=    getr    http://api-erp.com/admin/Supplier/suplier_list      params=${params}   headers=${headers}
+    ${resp}=    getr    /Supplier/suplier_list      params=${params}   headers=${headers}
     log    ${resp.json()}
+
+    Resp List Check     ${resp}     列表错误
 #    Resp Option Check      ${resp}          列表错误
 #    ${content}=     Get val from dic    ${resp.json()}      data
 #    log        ${content}
@@ -18,11 +21,8 @@ testList
 #    ${keys}=        get dictionary keys         ${content}
 #    log         ${keys}
 #    Resp List Check     ${resp}
-
     #Status Should be    OK      ${resp}
-
 #    request_method_check    ${resp.method}     GET
-
 #    create session      api
 #
 #    ${resp1}=   get_on_session_request     api   /Supplier/suplier_list   ${params}     headers=${headers}
@@ -42,12 +42,6 @@ testUpload
 
     ${data}=    create dictionary       remark=123  uid=8   id=1    type=5
     Log To Error    ${data}
-
-#    ${file}=  Get File For Streaming Upload  1.png
-#    ${files}=   Create Dictionary   file=${file}
-#    Log To Error    ${file}
-#    ${resp}=      Post    Attachment/supplierAttachmentUpload     files=${files}     data=${data}
-
     ${resp}=      PostF       Attachment/supplierAttachmentUpload  file  1.png     data=${data}
     Log         ${resp.json()}
 
@@ -60,3 +54,9 @@ testdb
     Disconnect
     log to std error        ${list}
 
+testBrowser
+    ${driver_path}=      Set Variable        /usr/bin/chromedriver
+    Open Browser    http://erp.inno.com       browser=chrome
+    Input Text      //*[@id="app"]/div/form[1]/div[2]/div/div[1]/input      erp001
+    Input Password      //*[@id="app"]/div/form[1]/div[3]/div/div[1]/input      123456
+    Click Element	//*[@id="app"]/div/form[1]/button
