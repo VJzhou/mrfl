@@ -38,5 +38,10 @@ Resp Option Check
     Log To Std Error    ${code}
     Run Keyword If      '${code}'!='200'      Log Error     ${message}${resp.json()}[msg]
 
+Parse Json to Dic
+    [Documentation]     解析json字符串成字典
+    [Arguments]     ${json}
+    ${parse_data}       Evaluate        json.loads(u'${json}')
+    Return From Keyword     ${parse_data}
 
 
